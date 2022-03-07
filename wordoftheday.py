@@ -8,7 +8,8 @@ os.chmod('chromedriver', st.st_mode | stat.S_IEXEC)
 chrome_options = Options()
 chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument('--disable-dev-shm-usage')
-DRIVER = webdriver.Chrome('./chromedriver', options=chrome_options)
+chrome_options.add_argument('--headless')
+DRIVER = webdriver.Chrome(executable_path=os.environ.get("CHROMEDRIVER_PATH"), options=chrome_options)
 WOTD_LINK = 'https://www.merriam-webster.com/word-of-the-day'
 
 def get_wotd():

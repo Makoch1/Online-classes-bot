@@ -4,7 +4,6 @@ import json
 from discord.ext import commands, tasks
 from genshinusers import Users, load_G_users
 from wordoftheday import get_wotd
-from staying_alive import keep_alive
 
 TOKEN = os.environ['token']
 client = commands.Bot(command_prefix='!')
@@ -125,7 +124,7 @@ def in_channel(channel_key):
     return client.get_channel(channels[str(channel_key)])
 
 
-load_G_users()
-get_word_of_day.start()
-keep_alive()
-client.run(TOKEN)
+if __name__ == '__main__':
+    load_G_users()
+    get_word_of_day.start()
+    client.run(TOKEN)
