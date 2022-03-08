@@ -5,7 +5,7 @@ from discord.ext import commands, tasks
 from genshinusers import Users, load_G_users
 from wordoftheday import get_wotd
 
-TOKEN = os.environ.get("Token")
+TOKEN = os.environ['token']
 client = commands.Bot(command_prefix='!')
 
 
@@ -64,9 +64,10 @@ async def addaccount(ctx, *args):
     Users(ctx.author.id, *[i for i in args])
 
 
-
+last_wotd_ID = 950585269017509948
 @tasks.loop(hours=12)
 async def get_word_of_day():
+    global last_wotd_ID
     wotd_data = get_wotd()
     Word = wotd_data['word']
     Definition = wotd_data['definition']
@@ -86,8 +87,7 @@ async def get_word_of_day():
 
     sent_msg = await in_channel('#wotd').send(embed=message)
 
-    with open('lastmsg.json', 'w') as file:
-        json.dump({'last_msg_id':sent_msg.id}, file)
+    last_wotd_ID = sent_msg.id
 
 @get_word_of_day.before_loop
 async def before():
@@ -95,14 +95,8 @@ async def before():
 
 async def wotd_alread_sent(current_word):
     channel = in_channel('#wotd')
-    
-    #try:
-    with open('lastmsg.json', 'r') as file:
-      last_message = json.load(file)
-    msg = await channel.fetch_message(last_message['last_msg_id'])
+    msg = await channel.fetch_message(last_wotd_ID)
     msg_wotd = msg.embeds[0].fields[0].name
-    #except:
-    #msg_wotd = None
 
     print(msg_wotd)
     if msg_wotd == f'{current_word}:':
