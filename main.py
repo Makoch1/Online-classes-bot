@@ -5,7 +5,7 @@ from discord.ext import commands, tasks
 from genshinusers import Users, load_G_users
 from wordoftheday import get_wotd
 
-TOKEN = os.environ['token']
+TOKEN = os.environ.get['Token']
 client = commands.Bot(command_prefix='!')
 
 
