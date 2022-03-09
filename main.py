@@ -94,19 +94,27 @@ async def before():
     await client.wait_until_ready()  
 
 async def wotd_alread_sent(current_word):
-    channel = in_channel('#wotd')
-    msg = await channel.fetch_message(last_wotd_ID)
-    msg_wotd = msg.embeds[0].fields[0].name
-
+    channel = await in_channel('#wotd')
+    message = await get_last_wotd(channel)
+    try:
+        msg_wotd = message[0].fields[0][0]
+    except:
+        print('word not found')
+        msg_wotd = None
     print(msg_wotd)
     if msg_wotd == f'{current_word}:':
         return True
     
     return False
 
+async def get_last_wotd(channel):
+    async for msg in channel.history(limit=100):
+        if msg.author == client.user:
+            return msg.embeds
+    return None
 
 
-def in_channel(channel_key):
+async def in_channel(channel_key):
     channels = {
     '#memes': 889091921962745876,
     '#videos': 889091905240055848,
@@ -115,7 +123,7 @@ def in_channel(channel_key):
     '#wotd': 948389047208935484
     }
 
-    return client.get_channel(channels[str(channel_key)])
+    return await client.get_channel(channels[str(channel_key)])
 
 
 if __name__ == '__main__':
