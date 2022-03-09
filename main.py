@@ -95,7 +95,7 @@ async def before():
 
 async def wotd_alread_sent(current_word):
     channel = await in_channel('#wotd')
-    message = await get_last_wotd(channel)
+    message = get_last_wotd(channel)
     try:
         msg_wotd = message[0].fields[0][0]
     except:
@@ -114,7 +114,7 @@ async def get_last_wotd(channel):
     return None
 
 
-async def in_channel(channel_key):
+def in_channel(channel_key):
     channels = {
     '#memes': 889091921962745876,
     '#videos': 889091905240055848,
@@ -123,7 +123,7 @@ async def in_channel(channel_key):
     '#wotd': 948389047208935484
     }
 
-    return await client.get_channel(channels[str(channel_key)])
+    return client.get_channel(channels[str(channel_key)])
 
 
 if __name__ == '__main__':
