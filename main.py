@@ -94,7 +94,7 @@ async def before():
     await client.wait_until_ready()  
 
 async def wotd_alread_sent(current_word):
-    channel = await in_channel('#wotd')
+    channel = in_channel('#wotd')
     message = get_last_wotd(channel)
     try:
         msg_wotd = message[0].fields[0][0]
