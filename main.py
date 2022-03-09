@@ -97,7 +97,7 @@ async def wotd_alread_sent(current_word):
     channel = in_channel('#wotd')
     message = await get_last_wotd(channel)
     try:
-        msg_wotd = message[0].fields[0][0]
+        msg_wotd = message[0].fields[0].name
     except:
         print('word not found')
         msg_wotd = None
