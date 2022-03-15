@@ -10,7 +10,7 @@ client = commands.Bot(command_prefix='!')
 
 
 @client.event
-async def on_reaction_add(reaction):
+async def on_reaction_add(reaction, user):
     msg_sender = reaction.message.author
     msg_content = reaction.message.content
     msg = reaction.message
