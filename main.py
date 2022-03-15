@@ -9,11 +9,8 @@ TOKEN = os.environ.get("Token")
 client = commands.Bot(command_prefix='!')
 
 
-Moderators = {}
-Moderateds = {}
 @client.event
-async def on_reaction_add(reaction, user):
-    
+async def on_reaction_add(reaction):
     msg_sender = reaction.message.author
     msg_content = reaction.message.content
     msg = reaction.message
@@ -21,31 +18,25 @@ async def on_reaction_add(reaction, user):
     emojis = {
     ':thisisameme:': '<:thisisameme:936493541453090857>',
     ':thisisavideo:': '<:thisisavideo:936493623074250772>',
-    ':YEP:': '<:YEP:936618774860275743>'
     }
-    
-    def appendModList():
-        try:
-            Moderators[user] += 1
-        except:
-            Moderators[user] = 1
-        try:
-            Moderateds[msg_sender] += 1
-        except:
-            Moderateds[msg_sender] = 1
 
-    # Removes messages that were supposed to be either in the video,
-    # or meme channel and re-sends them in their proper channels.
     if str(reaction.emoji) == emojis[':thisisameme:']:
-        attachment = msg.attachments[0].url
+        try:
+            content = msg.attachments[0].url
+        except:
+            content = msg_content
+
+        await in_channel('#memes').send(f'sent by: {msg_sender} {content}')
         await msg.delete()
-        await in_channel('#memes').send(f'sent by: {msg_sender} {attachment}')
-        appendModList()
+
     elif str(reaction.emoji) == emojis[':thisisavideo:']:
+        try:
+            content = msg.attachments[0].url
+        except:
+            content = msg_content
+
+        await in_channel('#videos').send(f'sent by: {msg_sender} {content}')
         await msg.delete()
-        await in_channel('#videos').send(f'sent by: {msg_sender} {msg_content}')
-        appendModList()
-    # //
 
 
 
